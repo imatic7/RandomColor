@@ -8,16 +8,23 @@ export default class FetchAPI extends React.Component {
     this.state = {
       color: "",
       colorList: [],
+      value: [],
     };
     this.getColor = this.getColor.bind(this);
     this.setColor = this.setColor.bind(this);
     this.handleClick = this.handleClick.bind(this);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   setColor(color) {
-    this.setState((prev) => ({
+    const filteredList = this.state.colorList.filter(
+      (newcolor) => newcolor !== color
+    );
+    this.setState(() => ({
       color: color,
-      colorList: [...prev.colorList, color],
+      colorList: [...filteredList, color],
     }));
 
     console.log(this.state.color);
@@ -26,7 +33,9 @@ export default class FetchAPI extends React.Component {
 
   getColor() {
     axios
-      .get(`https://www.colr.org/json/color/random?${new Date().getTime()}`)
+      .get(
+        `https://www.colr.org/json/color/random?1187573334?${new Date().getTime()}`
+      )
       .then((response) => {
         if (response.data.new_color) {
           console.log(response.data);
@@ -40,6 +49,13 @@ export default class FetchAPI extends React.Component {
 
   handleClick() {
     this.getColor();
+  }
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
   }
 
   render() {
